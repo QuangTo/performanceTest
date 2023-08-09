@@ -4,8 +4,8 @@
 --     PRIMARY KEY(id)
 -- )
 
--- SELECT * FROM course_go
+SELECT * FROM course_go where id =2
 
-INSERT INTO course_go(title) VALUES("Leadership");
+-- INSERT INTO course_go(title) VALUES("Leadership");
 
 -- DROP TABLE course_go;
