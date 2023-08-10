@@ -12,11 +12,11 @@ import (
 )
 
 type Course struct {
-	id    int
-	title string
+	ID    int    `json:"id"`
+	TITLE string `json:"title"`
 }
 
-// var db *sql.DB
+var db *sql.DB
 
 func main() {
 	startServer()
@@ -48,17 +48,18 @@ func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var courses []*Course
+
+	courses := make([]*Course, 0)
 	// loop throguh rows
 	for rows.Next() {
 		c := new(Course)
-		if err := rows.Scan(&c.id, &c.title); err != nil {
+		if err := rows.Scan(&c.ID, &c.TITLE); err != nil {
 			log.Fatal(err)
 		}
 		courses = append(courses, c)
 	}
-	// parse data to json
 
+	// parse data to json
 	byteArray, err := json.Marshal(courses)
 	if err != nil {
 		fmt.Println(err)
