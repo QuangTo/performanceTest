@@ -44,7 +44,7 @@ func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Connected!")
 
 	// query data
-	query := `SELECT id, title FROM course_go;`
+	query := `SELECT id, title FROM course_go LIMIT 100;`
 	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatal(err)

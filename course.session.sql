@@ -4,7 +4,7 @@
 --     PRIMARY KEY(id)
 -- )
 
-SELECT * FROM course_go
+SELECT * FROM course_go LIMIT 100;
 
 -- INSERT INTO course_go(title) VALUES("Leadership");
 
