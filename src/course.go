@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
@@ -20,6 +21,7 @@ var db *sql.DB
 
 func main() {
 	startServer()
+
 }
 
 func startServer() {
@@ -30,7 +32,7 @@ func startServer() {
 }
 
 func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
-	// connect db
+	//connect db
 	db, err := sql.Open("mysql", "root:12341234@(127.0.0.1:3306)/mysql?parseTime=true")
 	if err != nil {
 		log.Fatal("failed to connect to db")
@@ -40,7 +42,6 @@ func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(pingErr)
 	}
 	fmt.Println("Connected!")
-	defer db.Close()
 
 	// query data
 	query := `SELECT id, title FROM course_go;`
@@ -48,6 +49,7 @@ func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 
 	courses := make([]*Course, 0)
 	// loop throguh rows
@@ -65,4 +67,15 @@ func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	fmt.Fprintf(w, (string(byteArray)))
+}
+
+func loadSCVData() {
+	// load file adn insert into course table ( now is 2 mil records)
+	filePath := "course_title.csv"
+	mysql.RegisterLocalFile(filePath)
+	res, err := db.Exec("LOAD DATA LOCAL INFILE '" + filePath + "' INTO TABLE course_go(title)")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Insert 10k rows into DB Success!", res)
 }
