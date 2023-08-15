@@ -40,8 +40,6 @@ func connectDB() *sql.DB {
 	if err != nil {
 		log.Fatal("Failed to connect to db")
 	}
-	//Ping the database to test the connection
-	// checkPingPong()
 	fmt.Println("Connected!")
 	return db
 }
