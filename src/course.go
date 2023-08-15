@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/go-sql-driver/mysql"
 	_ "github.com/go-sql-driver/mysql"
@@ -20,8 +21,10 @@ type Course struct {
 var db *sql.DB
 
 func main() {
+	db = connectDB()
+	defer db.Close()
+	go pingDB()
 	startServer()
-
 }
 
 func startServer() {
@@ -31,25 +34,25 @@ func startServer() {
 	http.ListenAndServe(":8080", r)
 }
 
-func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
+func connectDB() *sql.DB {
 	//connect db
 	db, err := sql.Open("mysql", "root:12341234@(127.0.0.1:3306)/mysql?parseTime=true")
 	if err != nil {
-		log.Fatal("failed to connect to db")
+		log.Fatal("Failed to connect to db")
 	}
-	pingErr := db.Ping()
-	if pingErr != nil {
-		log.Fatal(pingErr)
-	}
+	//Ping the database to test the connection
+	// checkPingPong()
 	fmt.Println("Connected!")
+	return db
+}
 
+func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 	// query data
 	query := `SELECT id, title FROM course_go LIMIT 100;`
 	rows, err := db.Query(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Query error: ", err)
 	}
-	defer rows.Close()
 
 	courses := make([]*Course, 0)
 	// loop throguh rows
@@ -78,4 +81,19 @@ func loadSCVData() {
 		log.Fatal(err)
 	}
 	fmt.Println("Insert 10k rows into DB Success!", res)
+}
+
+func pingDB() {
+	// ping DB every 2 sec
+	var i = 0
+	for {
+		i++
+		err := db.Ping()
+		if err != nil {
+			log.Println("Ping db eror:", err)
+		} else {
+			fmt.Println("Ping Pong!", i)
+		}
+		time.Sleep(2 * time.Second)
+	}
 }
