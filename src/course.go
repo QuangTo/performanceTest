@@ -36,7 +36,8 @@ func startServer() {
 
 func connectDB() *sql.DB {
 	//connect db
-	db, err := sql.Open("mysql", "root:12341234@(127.0.0.1:3306)/mysql?parseTime=true")
+	// connectionPool
+	db, err := sql.Open("mysql", "root:12341234@(127.0.0.1:3306)/course?parseTime=true")
 	if err != nil {
 		log.Fatal("Failed to connect to db")
 	}
@@ -46,7 +47,7 @@ func connectDB() *sql.DB {
 
 func getCourseListHandler(w http.ResponseWriter, r *http.Request) {
 	// query data
-	query := `SELECT id, title FROM course_go LIMIT 100;`
+	query := `SELECT id, title FROM content LIMIT 100;`
 	rows, err := db.Query(query)
 	if err != nil {
 		log.Fatal("Query error: ", err)
