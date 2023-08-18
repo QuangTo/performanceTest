@@ -42,6 +42,11 @@ func connectDB() *sql.DB {
 		log.Fatal("Failed to connect to db")
 	}
 	fmt.Println("Connected!")
+
+	// set by default
+	db.SetConnMaxLifetime(time.Minute * 2)
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
 	return db
 }
 
