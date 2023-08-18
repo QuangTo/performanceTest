@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db-10m:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: course_database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - ./src/sql-10mil:/docker-entrypoint-initdb.d
+    ports:
+      - 3307:3306
+  db-10m-index:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: course_database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    volumes:
+      - ./src/sql-10mil-index:/docker-entrypoint-initdb.d
+    ports:
+      - 3308:3306
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
