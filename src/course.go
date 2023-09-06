@@ -31,7 +31,7 @@ func startServer() {
 	r := mux.NewRouter()
 	r.HandleFunc("/course-list", getCourseListHandler).
 		Methods("GET")
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":8081", r)
 }
 
 func connectDB() *sql.DB {
