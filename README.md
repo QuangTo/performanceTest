@@ -9,8 +9,7 @@
 - Gomysql connect to DB query data
 - Docker start mysql, docker cache
 - Start server
-- Cache layer cache course data
-- Stress test
+- Performance test
 
 ### Install docker and access db
 
@@ -70,5 +69,5 @@ brew install k6
 - Run test suite script
 
 ```
-k6 run src/performanceTest/api_script.js
+k6 run src/performanceTest/stress_test.js
 ```
