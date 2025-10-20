@@ -1,4 +1,0 @@
-CREATE TABLE IF NOT EXISTS course.content(
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255)
-);

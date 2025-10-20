@@ -1,0 +1,6 @@
+{
+   
+    "qa": {
+        "baseUrl": "https://quickpizza.grafana.com/"
+    }
+}
