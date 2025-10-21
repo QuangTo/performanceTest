@@ -1,7 +1,14 @@
-export const default_soak_test = {
-  stages: [
-    { duration: '1m', target: 30 },    // ramp up
-    { duration: '2m', target: 30 },   // steady (1 hour)
-    { duration: '1m', target: 0 },
+/**
+ * Another variation of avg load test. it focus on extended periods
+ */
+export const default_load_test ={
+    stages: [
+    {duration :'0.5m', target: 10}, //ramp-up
+    {duration :'8h', target: 10}, //steady
+    {duration :'0.5m', target: 0}, //ramp-down
   ],
-};
+  thrsholds:{
+    http_req_failed: ['rate< 0.01'],
+    http_req_duration:['p(95)<400']
+  },
+}
