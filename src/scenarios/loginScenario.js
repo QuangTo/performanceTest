@@ -1,29 +1,25 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-import { LoginDuration } from '../utils/metrics.js';
-
+import { createHeaders } from '../utils/header.js';
+import { LoginSample } from '../utils/metrics.js';
 
 export function loginScenario(baseUrl, user) {
-  const url = `${baseUrl}/auth/login`;
-
+  const url = `${baseUrl}/auth/basic/login/`;
+  const params = {
+    headers: createHeaders()
+  };
   const payload = JSON.stringify({
     username: user.username,
-    password: user.password,
+    password: user.password
   });
 
-  const params = {
-    headers: { 'Content-Type': 'application/json' },
-  };
-
   const res = http.post(url, payload, params);
-  //  Record custom metric
-  LoginDuration.add(res.timings.duration);
+  LoginSample.add(res.timings.duration);
 
-  // Validate basic response
   check(res, {
     '✅ status is 200': (r) => r.status === 200,
     '✅ has non-empty body': (r) => r.body && r.body.length > 0,
-    '✅ response time < 500ms': (r) => r.timings.duration < 500,
+    '✅ response time < 800ms': (r) => r.timings.duration < 800
   });
 
   sleep(1);

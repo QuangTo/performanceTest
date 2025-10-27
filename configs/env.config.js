@@ -1,5 +1,5 @@
-export const BASE_URL = __ENV.BASE_URL || 'https://automationintesting.online/api/auth/login';
+export const BASE_URL = __ENV.BASE_URL || 'https://test-api.k6.io/';
 export const USER = {
-  username: __ENV.USERNAME || 'admin',
-  password: __ENV.PASSWORD || 'password',
+  username: __ENV.USERNAME || 'test',
+  password: __ENV.PASSWORD || '1234',
 };
